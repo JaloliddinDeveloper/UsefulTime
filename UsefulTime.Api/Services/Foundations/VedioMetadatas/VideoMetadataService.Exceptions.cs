@@ -2,6 +2,7 @@
 //Copyright (c) Coalition of Good-Hearted Engineers 
 //Free To Use To Find Comfort and Pease
 //=================================================
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using UsefulTime.Api.Models.VideoMetadatas;
 using UsefulTime.Api.Models.VideoMetadatas.Exceptions;
@@ -26,7 +27,7 @@ namespace UsefulTime.Api.Services.Foundations.VideoMetadatas
             {
                 throw CreateAndLogValidationException(invalidVideoMetadataException);
             }
-            catch (SqlException sqlException )
+            catch (SqlException sqlException)
             {
                 var failedVideoMetadataStorageException =
                 new FailedVideoMetadataStorageException(
@@ -34,8 +35,29 @@ namespace UsefulTime.Api.Services.Foundations.VideoMetadatas
                     innerException: sqlException);
                 throw CreateAndLogCriticalDependencyException(failedVideoMetadataStorageException);
             }
-        }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                var alreadyExistVideoMetadataException =
+                 new AlreadyExistVideoMetadataException(
+                     message: "VideoMetadata already exist",
+                      innerException: duplicateKeyException);
+                throw CreateAndDependencyValidationException(alreadyExistVideoMetadataException);
+            }
+            catch (Exception exception)
+            {
+                var failedVideoMetadataServiceException =
+                    new FailedVideoMetadataServiceException(message: "Failed guest service error occurred,contact support",innerException:exception);
 
+                throw CreateAndLogServiseException(failedVideoMetadataServiceException);
+            }
+        }
+        private VideoMetadataServiceException CreateAndLogServiseException(Xeption exception)
+        {
+            var videoMetadataServiceException =
+                new VideoMetadataServiceException(message: "Video metadata service error occurred,contact support",innerException:exception);
+            this.loggingBroker.LogError(videoMetadataServiceException);
+            return videoMetadataServiceException;
+        }
         private VideoMetadataDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
         {
             var videoMetadataDependencyException =
@@ -45,7 +67,6 @@ namespace UsefulTime.Api.Services.Foundations.VideoMetadatas
             this.loggingBroker.LogCritical(videoMetadataDependencyException);
             throw videoMetadataDependencyException;
         }
-
         private VideoMetadataValidationException CreateAndLogValidationException(Xeption exception)
         {
             var videoMetadataValidationException =
@@ -55,6 +76,15 @@ namespace UsefulTime.Api.Services.Foundations.VideoMetadatas
 
             this.loggingBroker.LogError(videoMetadataValidationException);
             return videoMetadataValidationException;
+        }
+        public VideoMetadataDependencyValidationException CreateAndDependencyValidationException(Xeption exception)
+        {
+            var videoMetadataDependencyValidationException =
+                 new VideoMetadataDependencyValidationException(
+                     message: "Video metadata dependency error occurred,fix the errors try again",
+                     innerException:exception );
+            this.loggingBroker.LogError(videoMetadataDependencyValidationException);
+            return videoMetadataDependencyValidationException;
         }
     }
 }

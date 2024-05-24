@@ -50,5 +50,9 @@ namespace UsefulTime.Unit.Tests.Services.Foundations.VideoMetadatas
         }
         private static SqlException GetSqlException()=>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
+        private static string GetRandomString()
+        {
+            return new MnemonicString().GetValue();
+        }
     }
 }
