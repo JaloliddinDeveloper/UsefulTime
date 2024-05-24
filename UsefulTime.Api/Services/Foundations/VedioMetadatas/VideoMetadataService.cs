@@ -18,10 +18,7 @@ namespace UsefulTime.Api.Services.Foundations.VedioMetadatas
             this.storageBroker = storageBroker;
             this.loggingBroker = loggingBroker;
         }
-
-        public async ValueTask<VideoMetadata> AddVideoMetadataAsync(VideoMetadata videoMetadata)
-        {
-            throw new NotImplementedException();
-        }
+        public async ValueTask<VideoMetadata> AddVideoMetadataAsync(VideoMetadata videoMetadata)=>
+               await this.storageBroker.InsertVideoMetadataAsync(videoMetadata);
     }
 }
