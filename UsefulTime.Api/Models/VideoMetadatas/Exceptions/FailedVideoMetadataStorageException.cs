@@ -11,7 +11,5 @@ namespace UsefulTime.Api.Models.VideoMetadatas.Exceptions
         public FailedVideoMetadataStorageException(string message,Exception innerException)
             :base(message,innerException)
         { }
-            
-        
     }
 }
