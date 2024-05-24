@@ -2,7 +2,9 @@
 //Copyright (c) Coalition of Good-Hearted Engineers 
 //Free To Use To Find Comfort and Pease
 //=================================================
+using UsefulTime.Api.Brokers.Loggings;
 using UsefulTime.Api.Brokers.Storages;
+using UsefulTime.Api.Services.Foundations.VideoMetadatas;
 
 public class Program
 {
@@ -15,6 +17,8 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddTransient<IStorageBroker, StorageBroker>();
+        builder.Services.AddTransient<ILoggingBroker, LoggingBroker>();
+        builder.Services.AddTransient<IVideoMetadataService, VideoMetadataService>();
 
         var app = builder.Build();
 
