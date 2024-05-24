@@ -12,5 +12,9 @@ namespace UsefulTime.Api.Brokers.Storages
         public DbSet<VideoMetadata> VideoMetadatas { get; set; }
         public async ValueTask<VideoMetadata> InsertVideoMetadataAsync(VideoMetadata videoMetadata)=>
             await InsertAsync(videoMetadata);
+
+        public IQueryable<VideoMetadata> SelectAllVideoMetadatas()=>
+            SelectAll<VideoMetadata>();
+        
     }
 }

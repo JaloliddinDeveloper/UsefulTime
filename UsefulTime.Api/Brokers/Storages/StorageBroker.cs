@@ -24,6 +24,12 @@ namespace UsefulTime.Api.Brokers.Storages
             await broker.SaveChangesAsync();
             return @object;
         }
+        private IQueryable<T> SelectAll<T>() where T : class
+        {
+            using var broker = new StorageBroker(this.configuration);
+
+            return broker.Set<T>();
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string connectionString =
@@ -32,5 +38,7 @@ namespace UsefulTime.Api.Brokers.Storages
             optionsBuilder.UseSqlServer(connectionString);
         }
         public override void Dispose() { }
+
+       
     }
 }

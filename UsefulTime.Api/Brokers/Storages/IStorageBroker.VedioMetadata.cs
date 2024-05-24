@@ -9,5 +9,6 @@ namespace UsefulTime.Api.Brokers.Storages
     public partial interface IStorageBroker
     {
         ValueTask<VideoMetadata> InsertVideoMetadataAsync(VideoMetadata videoMetadata);
+        IQueryable<VideoMetadata> SelectAllVideoMetadatas();
     }
 }
