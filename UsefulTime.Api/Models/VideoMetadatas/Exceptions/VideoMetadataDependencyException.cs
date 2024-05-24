@@ -8,8 +8,8 @@ namespace UsefulTime.Api.Models.VideoMetadatas.Exceptions
 {
     public class VideoMetadataDependencyException:Xeption
     {
-        public VideoMetadataDependencyException(string message)
-            :base(message)
+        public VideoMetadataDependencyException(string message,Xeption innerException)
+            :base(message,innerException)
         { }
     }
 }
