@@ -67,10 +67,14 @@ namespace UsefulTime.Unit.Tests.Services.Foundations.VideoMetadatas
                 new DuplicateKeyException(message:someMessage);
 
             var alreadyExistVideoMetadataException =
-                new AlreadyExistVideoMetadataException(message:"Ah",innerException:duplicateKeyException);
+                new AlreadyExistVideoMetadataException(
+                    message: "VideoMetadata already exist",
+                     innerException:duplicateKeyException);
+
             var expectedVideoMetadataDependencyValidationException =
                 new VideoMetadataDependencyValidationException(
-                    message:"Ab",innerException:alreadyExistVideoMetadataException);
+                    message: "Video metadata dependency error occurred,fix the errors try again",
+                    innerException:alreadyExistVideoMetadataException);
 
             this.storageBrokerMock.Setup(broker =>
             broker.InsertVideoMetadataAsync(someVideoMetadata))
