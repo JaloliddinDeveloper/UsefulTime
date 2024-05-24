@@ -10,5 +10,7 @@ namespace UsefulTime.Api.Brokers.Storages
     public partial class StorageBroker
     { 
         public DbSet<VideoMetadata> VideoMetadatas { get; set; }
+        public async ValueTask<VideoMetadata> InsertVideoMetadataAsync(VideoMetadata videoMetadata)=>
+            await InsertAsync(videoMetadata);
     }
 }
