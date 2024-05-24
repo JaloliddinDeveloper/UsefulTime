@@ -43,6 +43,20 @@ namespace UsefulTime.Api.Services.Foundations.VideoMetadatas
                       innerException: duplicateKeyException);
                 throw CreateAndDependencyValidationException(alreadyExistVideoMetadataException);
             }
+            catch (Exception exception)
+            {
+                var failedVideoMetadataServiceException =
+                    new FailedVideoMetadataServiceException(message: "Failed guest service error occurred,contact support",innerException:exception);
+
+                throw CreateAndLogServiseException(failedVideoMetadataServiceException);
+            }
+        }
+        private VideoMetadataServiceException CreateAndLogServiseException(Xeption exception)
+        {
+            var videoMetadataServiceException =
+                new VideoMetadataServiceException(message: "Video metadata service error occurred,contact support",innerException:exception);
+            this.loggingBroker.LogError(videoMetadataServiceException);
+            return videoMetadataServiceException;
         }
         private VideoMetadataDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
         {
