@@ -1,25 +1,35 @@
-var builder = WebApplication.CreateBuilder(args);
+//=================================================
+//Copyright (c) Coalition of Good-Hearted Engineers 
+//Free To Use To Find Comfort and Pease
+//=================================================
+using UsefulTime.Api.Brokers.Storages;
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+public class Program
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    private static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddControllers();
+
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+        builder.Services.AddTransient<IStorageBroker, StorageBroker>();
+
+        var app = builder.Build();
+
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+
+        app.UseHttpsRedirection();
+
+        app.UseAuthorization();
+
+        app.MapControllers();
+
+        app.Run();
+    }
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
