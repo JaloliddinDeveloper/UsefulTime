@@ -3,6 +3,7 @@
 //Free To Use To Find Comfort and Pease
 //=================================================
 using UsefulTime.Api.Brokers.Storages;
+using UsefulTime.Api.Services.Foundations.VedioMetadatas;
 
 public class Program
 {
@@ -15,6 +16,7 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddTransient<IStorageBroker, StorageBroker>();
+        builder.Services.AddTransient<IVideoMetadataService, VideoMetadataService>();
 
         var app = builder.Build();
 
