@@ -4,7 +4,7 @@
 //=================================================
 using UsefulTime.Api.Models.VideoMetadatas;
 
-namespace UsefulTime.Api.Services.Foundations.VedioMetadatas
+namespace UsefulTime.Api.Services.Foundations.VideoMetadatas
 {
     public interface IVideoMetadataService
     {

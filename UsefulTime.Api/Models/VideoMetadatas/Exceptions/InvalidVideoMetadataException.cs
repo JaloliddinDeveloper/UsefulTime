@@ -6,10 +6,10 @@ using Xeptions;
 
 namespace UsefulTime.Api.Models.VideoMetadatas.Exceptions
 {
-    public class VideoMetadataValidationException:Xeption
+    public class InvalidVideoMetadataException:Xeption
     {
-        public VideoMetadataValidationException(string message, Xeption innerException)
-            : base(message, innerException)
+        public InvalidVideoMetadataException(string message)
+            :base(message)
         { }
     }
 }

@@ -6,9 +6,9 @@ using UsefulTime.Api.Brokers.Loggings;
 using UsefulTime.Api.Brokers.Storages;
 using UsefulTime.Api.Models.VideoMetadatas;
 
-namespace UsefulTime.Api.Services.Foundations.VedioMetadatas
+namespace UsefulTime.Api.Services.Foundations.VideoMetadatas
 {
-    public class VideoMetadataService : IVideoMetadataService
+    public partial class VideoMetadataService : IVideoMetadataService
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -18,7 +18,12 @@ namespace UsefulTime.Api.Services.Foundations.VedioMetadatas
             this.storageBroker = storageBroker;
             this.loggingBroker = loggingBroker;
         }
-        public async ValueTask<VideoMetadata> AddVideoMetadataAsync(VideoMetadata videoMetadata)=>
-               await this.storageBroker.InsertVideoMetadataAsync(videoMetadata);
+        public ValueTask<VideoMetadata> AddVideoMetadataAsync(VideoMetadata videoMetadata) =>
+           TryCatch(async () =>
+           {
+               ValidatevideoMetadataOnAdd(videoMetadata);
+
+               return await this.storageBroker.InsertVideoMetadataAsync(videoMetadata);
+           });
     }
 }

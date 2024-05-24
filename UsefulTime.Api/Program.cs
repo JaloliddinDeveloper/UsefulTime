@@ -4,7 +4,7 @@
 //=================================================
 using UsefulTime.Api.Brokers.Loggings;
 using UsefulTime.Api.Brokers.Storages;
-using UsefulTime.Api.Services.Foundations.VedioMetadatas;
+using UsefulTime.Api.Services.Foundations.VideoMetadatas;
 
 public class Program
 {
@@ -17,8 +17,8 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddTransient<IStorageBroker, StorageBroker>();
-        builder.Services.AddTransient<IVideoMetadataService, VideoMetadataService>();
         builder.Services.AddTransient<ILoggingBroker, LoggingBroker>();
+        builder.Services.AddTransient<IVideoMetadataService, VideoMetadataService>();
 
         var app = builder.Build();
 

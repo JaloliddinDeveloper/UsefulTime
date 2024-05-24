@@ -2,13 +2,16 @@
 //Copyright (c) Coalition of Good-Hearted Engineers 
 //Free To Use To Find Comfort and Pease
 //=================================================
+using Microsoft.Data.SqlClient;
 using Moq;
+using System.Data.SqlTypes;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using Tynamix.ObjectFiller;
 using UsefulTime.Api.Brokers.Loggings;
 using UsefulTime.Api.Brokers.Storages;
 using UsefulTime.Api.Models.VideoMetadatas;
-using UsefulTime.Api.Services.Foundations.VedioMetadatas;
+using UsefulTime.Api.Services.Foundations.VideoMetadatas;
 using Xeptions;
 
 namespace UsefulTime.Unit.Tests.Services.Foundations.VideoMetadatas
@@ -45,5 +48,7 @@ namespace UsefulTime.Unit.Tests.Services.Foundations.VideoMetadatas
                .OnType<DateTimeOffset>().Use(date);
             return filler;
         }
+        private static SqlException GetSqlException()=>
+            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
     }
 }
