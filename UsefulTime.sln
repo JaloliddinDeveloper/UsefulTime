@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsefulTime.Build.Project", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsefulTime.Api", "UsefulTime.Api\UsefulTime.Api.csproj", "{D7F4508D-85FA-4537-ACA3-170FAEDC9C3F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsefulTime.Unit.Tests", "UsefulTime.Unit.Tests\UsefulTime.Unit.Tests.csproj", "{774BEDFD-03B6-4929-94F0-CB75435A48E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D7F4508D-85FA-4537-ACA3-170FAEDC9C3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7F4508D-85FA-4537-ACA3-170FAEDC9C3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7F4508D-85FA-4537-ACA3-170FAEDC9C3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{774BEDFD-03B6-4929-94F0-CB75435A48E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{774BEDFD-03B6-4929-94F0-CB75435A48E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{774BEDFD-03B6-4929-94F0-CB75435A48E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{774BEDFD-03B6-4929-94F0-CB75435A48E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
