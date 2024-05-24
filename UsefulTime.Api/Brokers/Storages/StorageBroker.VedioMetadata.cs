@@ -15,6 +15,14 @@ namespace UsefulTime.Api.Brokers.Storages
 
         public IQueryable<VideoMetadata> SelectAllVideoMetadatas()=>
             SelectAll<VideoMetadata>();
-        
+
+        public async ValueTask<VideoMetadata> SelectVideoMetadataByIdAsync(Guid videoMetadataId) =>
+       await SelectAsync<VideoMetadata>(videoMetadataId);
+
+        public async ValueTask<VideoMetadata> UpdateVideoMetadataAsync(VideoMetadata videoMetadata) =>
+            await UpdateAsync(videoMetadata);
+
+        public async ValueTask<VideoMetadata> DeleteVideoMetadataAsync(VideoMetadata videoMetadata) =>
+             await DeleteAsync(videoMetadata);
     }
 }

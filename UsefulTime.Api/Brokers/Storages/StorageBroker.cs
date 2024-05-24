@@ -4,7 +4,6 @@
 //=================================================
 using EFxceptions;
 using Microsoft.EntityFrameworkCore;
-using UsefulTime.Api.Models.VideoMetadatas;
 
 namespace UsefulTime.Api.Brokers.Storages
 {
@@ -30,6 +29,28 @@ namespace UsefulTime.Api.Brokers.Storages
 
             return broker.Set<T>();
         }
+        private async ValueTask<T> SelectAsync<T>(params object[] objectIds) where T : class
+        {
+            using var broker = new StorageBroker(this.configuration);
+
+            return await broker.FindAsync<T>(objectIds);
+        }
+        private async ValueTask<T> UpdateAsync<T>(T @object) where T : class
+        {
+            using var broker = new StorageBroker(this.configuration);
+            broker.Entry(@object).State = EntityState.Modified;
+            await broker.SaveChangesAsync();
+
+            return @object;
+        }
+        private async ValueTask<T> DeleteAsync<T>(T @object) where T : class
+        {
+            using var broker = new StorageBroker(this.configuration);
+            broker.Entry(@object).State = EntityState.Deleted;
+            await broker.SaveChangesAsync();
+
+            return @object;
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string connectionString =
@@ -38,7 +59,5 @@ namespace UsefulTime.Api.Brokers.Storages
             optionsBuilder.UseSqlServer(connectionString);
         }
         public override void Dispose() { }
-
-       
     }
 }
