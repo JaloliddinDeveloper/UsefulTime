@@ -42,6 +42,23 @@ namespace UsefulTime.Api.Services.Foundations.VideoMetadatas
             Condition = date == default,
             Message = "Data is required"
         };
+        private static dynamic IsNotSame(
+         DateTimeOffset firstDate,
+         DateTimeOffset secondDate,
+         string secondDateName) => new
+         {
+             Condition = firstDate != secondDate,
+             Message = $"Date is not same as {secondDateName}"
+         };
+
+        private static dynamic IsSame(
+            DateTimeOffset firstDate,
+            DateTimeOffset secondDate,
+            string secondDateName) => new
+            {
+                Condition = firstDate == secondDate,
+                Message = $"Date is the same as {secondDateName}"
+            };
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
             var invalidVideoMetadataException = 

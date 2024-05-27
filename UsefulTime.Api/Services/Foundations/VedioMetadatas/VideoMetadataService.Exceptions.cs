@@ -4,6 +4,7 @@
 //=================================================
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using UsefulTime.Api.Models.VideoMetadatas;
 using UsefulTime.Api.Models.VideoMetadatas.Exceptions;
 using Xeptions;
@@ -43,6 +44,14 @@ namespace UsefulTime.Api.Services.Foundations.VideoMetadatas
                       innerException: duplicateKeyException);
                 throw CreateAndDependencyValidationException(alreadyExistVideoMetadataException);
             }
+            catch (DbUpdateException databaseUpdateException)
+            {
+                var failedVideoMetadataStorageException = new FailedVideoMetadataStorageException(
+               message: "Failed video metadata error occured, cotact support",
+                   innerException: databaseUpdateException);
+
+                throw CreateAndLogDependencyException(failedVideoMetadataStorageException);
+            }
             catch (Exception exception)
             {
                 var failedVideoMetadataServiceException =
@@ -51,6 +60,17 @@ namespace UsefulTime.Api.Services.Foundations.VideoMetadatas
                 throw CreateAndLogServiseException(failedVideoMetadataServiceException);
             }
         }
+
+        private VideoMetadataDependencyException CreateAndLogDependencyException(Xeption exception)
+        {
+            var videoMetadataDependencyException = new VideoMetadataDependencyException(
+                message: "Failed video metadata error occured, cotact support",
+                   innerException: exception);
+            this.loggingBroker.LogCritical(videoMetadataDependencyException);
+
+            return videoMetadataDependencyException;
+        }
+        
         private VideoMetadataServiceException CreateAndLogServiseException(Xeption exception)
         {
             var videoMetadataServiceException =

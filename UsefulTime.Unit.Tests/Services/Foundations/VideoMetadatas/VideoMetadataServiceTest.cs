@@ -8,6 +8,7 @@ using System.Data.SqlTypes;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Tynamix.ObjectFiller;
+using UsefulTime.Api.Brokers.DateTimes;
 using UsefulTime.Api.Brokers.Loggings;
 using UsefulTime.Api.Brokers.Storages;
 using UsefulTime.Api.Models.VideoMetadatas;
@@ -20,6 +21,7 @@ namespace UsefulTime.Unit.Tests.Services.Foundations.VideoMetadatas
     {
         private readonly Mock<IStorageBroker> storageBrokerMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
+        private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
         private readonly IVideoMetadataService videoMetadataService;
 
         public VideoMetadataServiceTest()
@@ -29,7 +31,8 @@ namespace UsefulTime.Unit.Tests.Services.Foundations.VideoMetadatas
 
             this.videoMetadataService = new VideoMetadataService
                 (storageBroker: this.storageBrokerMock.Object,
-                loggingBroker: loggingBrokerMock.Object);
+                loggingBroker: this.loggingBrokerMock.Object,
+                dateTimeBroker: this.dateTimeBrokerMock.Object);
         }
 
         private Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException) =>
