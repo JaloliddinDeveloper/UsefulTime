@@ -44,6 +44,14 @@ namespace UsefulTime.Api.Services.Foundations.VideoMetadatas
                       innerException: duplicateKeyException);
                 throw CreateAndDependencyValidationException(alreadyExistVideoMetadataException);
             }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                LockedVideoMetadataException lockedVideoMetadataException = new LockedVideoMetadataException(
+                    "Video Metadata is locked, please try again",
+                        dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyValidationException(lockedVideoMetadataException);
+            }
             catch (DbUpdateException databaseUpdateException)
             {
                 var failedVideoMetadataStorageException = new FailedVideoMetadataStorageException(
@@ -104,6 +112,16 @@ namespace UsefulTime.Api.Services.Foundations.VideoMetadatas
             this.loggingBroker.LogError(videoMetadataDependencyException);
 
             return videoMetadataDependencyException;
+        }
+        private VideoMetadataDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
+        {
+            var videoMetadataDependencyValidationException = new VideoMetadataDependencyValidationException(
+                "Video metadata Dependency validation error occured,fix the errors and try again",
+                    exception);
+
+            this.loggingBroker.LogError(videoMetadataDependencyValidationException);
+
+            return videoMetadataDependencyValidationException;
         }
     }
 }
