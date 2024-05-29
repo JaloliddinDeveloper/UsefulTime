@@ -63,7 +63,9 @@ namespace UsefulTime.Api.Services.Foundations.VideoMetadatas
             catch (Exception exception)
             {
                 var failedVideoMetadataServiceException =
-                    new FailedVideoMetadataServiceException(message: "Failed guest service error occurred,contact support",innerException:exception);
+                    new FailedVideoMetadataServiceException(
+                        message: "Failed guest service error occurred,contact support",
+                        innerException:exception);
 
                 throw CreateAndLogServiseException(failedVideoMetadataServiceException);
             }
