@@ -4,6 +4,7 @@
 //=================================================
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using UsefulTime.Api.Models.VideoMetadatas;
 using UsefulTime.Api.Models.VideoMetadatas.Exceptions;
 using Xeptions;
@@ -42,6 +43,14 @@ namespace UsefulTime.Api.Services.Foundations.VideoMetadatas
                      message: "VideoMetadata already exist",
                       innerException: duplicateKeyException);
                 throw CreateAndDependencyValidationException(alreadyExistVideoMetadataException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                LockedVideoMetadataException lockedVideoMetadataException = new LockedVideoMetadataException(
+                    "Video Metadata is locked, please try again.",
+                        dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyValidationException(lockedVideoMetadataException);
             }
             catch (Exception exception)
             {
@@ -84,6 +93,16 @@ namespace UsefulTime.Api.Services.Foundations.VideoMetadatas
                      message: "Video metadata dependency error occurred,fix the errors try again",
                      innerException:exception );
             this.loggingBroker.LogError(videoMetadataDependencyValidationException);
+            return videoMetadataDependencyValidationException;
+        }
+        private VideoMetadataDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
+        {
+            var videoMetadataDependencyValidationException = new VideoMetadataDependencyValidationException(
+                 "Video metadata dependency error occurred,fix the errors try again",
+                    exception);
+
+            this.loggingBroker.LogError(videoMetadataDependencyValidationException);
+
             return videoMetadataDependencyValidationException;
         }
     }
