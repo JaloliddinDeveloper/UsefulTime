@@ -16,7 +16,7 @@ namespace UsefulTime.Api.Services.Foundations.VideoMetadatas
         private readonly IDateTimeBroker dateTimeBroker;
 
         public VideoMetadataService(
-            IStorageBroker storageBroker,
+            IStorageBroker storageBroker, 
             ILoggingBroker loggingBroker, 
             IDateTimeBroker dateTimeBroker)
         {

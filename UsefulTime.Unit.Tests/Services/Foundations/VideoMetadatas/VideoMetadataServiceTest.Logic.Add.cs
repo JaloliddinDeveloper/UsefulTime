@@ -15,11 +15,14 @@ namespace UsefulTime.Unit.Tests.Services.Foundations.VideoMetadatas
         public async Task ShouldAddVideoMetadataAsync()
         {
             //give
-            VideoMetadata randomVideoMetadata = CreateRandomVideoMetadata();
+            DateTimeOffset randomDate = GetRandomDateTime();
+            VideoMetadata randomVideoMetadata = CreateRandomVideoMetadata(randomDate);
             VideoMetadata inputVideoMetadata = randomVideoMetadata;
             VideoMetadata returningVideoMetadata = inputVideoMetadata;
             VideoMetadata expectedVideoMetadata = returningVideoMetadata.DeepClone();
 
+            this.dateTimeBrokerMock.Setup(broker =>
+              broker.GetCurrentDateTimeOffset()).Returns(randomDate);
             this.storageBrokerMock.Setup(broker =>
             broker.InsertVideoMetadataAsync(inputVideoMetadata)).ReturnsAsync(expectedVideoMetadata);
             //when
@@ -27,7 +30,8 @@ namespace UsefulTime.Unit.Tests.Services.Foundations.VideoMetadatas
                 await this.videoMetadataService.AddVideoMetadataAsync(inputVideoMetadata);
             //then
             actualVideoMetadata.Should().BeEquivalentTo(expectedVideoMetadata);
-
+            this.dateTimeBrokerMock.Verify(broker =>
+               broker.GetCurrentDateTimeOffset(), Times.Once);
             this.storageBrokerMock.Verify(broker =>
             broker.InsertVideoMetadataAsync(inputVideoMetadata), Times.Once());
 

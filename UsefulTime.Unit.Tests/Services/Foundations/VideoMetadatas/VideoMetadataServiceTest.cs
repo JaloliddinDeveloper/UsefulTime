@@ -4,7 +4,6 @@
 //=================================================
 using Microsoft.Data.SqlClient;
 using Moq;
-using System.Data.SqlTypes;
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
 using Tynamix.ObjectFiller;
@@ -28,31 +27,35 @@ namespace UsefulTime.Unit.Tests.Services.Foundations.VideoMetadatas
         {
             this.storageBrokerMock = new Mock<IStorageBroker>();
             this.loggingBrokerMock = new Mock<ILoggingBroker>();
-            this.dateTimeBrokerMock= new Mock<IDateTimeBroker>();
+            this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
 
             this.videoMetadataService = new VideoMetadataService
                 (storageBroker: this.storageBrokerMock.Object,
-                loggingBroker: loggingBrokerMock.Object,
+                loggingBroker: this.loggingBrokerMock.Object,
                 dateTimeBroker:this.dateTimeBrokerMock.Object);
         }
 
         private Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException) =>
          actualException => actualException.SameExceptionAs(expectedException);
 
-        private static VideoMetadata CreateRandomVideoMetadata() =>
-           CreateVideoMetadataFiller(date: GetRandomDateTimeOffset()).Create();
-        public static DateTimeOffset GetRandomDateTimeOffset() =>
-            new DateTimeRange(earliestDate: new DateTime()).GetValue();
+        private static DateTimeOffset GetRandomDateTime() =>
+           new DateTimeRange(earliestDate: DateTime.UnixEpoch).GetValue();
 
-        private static Filler<VideoMetadata> CreateVideoMetadataFiller(DateTimeOffset date)                             
+        private static VideoMetadata CreateRandomVideoMetadata() =>
+         CreateVideoMetadataFiller(GetRandomDateTime()).Create();
+
+        public static VideoMetadata CreateRandomVideoMetadata(DateTimeOffset date) =>
+          CreateVideoMetadataFiller(date).Create();
+        
+        private static Filler<VideoMetadata> CreateVideoMetadataFiller(DateTimeOffset dates)
         {
             var filler = new Filler<VideoMetadata>();
 
             filler.Setup()
-               .OnType<DateTimeOffset>().Use(date);
+               .OnType<DateTimeOffset>().Use(dates);
             return filler;
         }
-        private static SqlException GetSqlException()=>
+        private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
         private static string GetRandomString()
         {
