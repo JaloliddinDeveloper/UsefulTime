@@ -28,6 +28,7 @@ namespace UsefulTime.Unit.Tests.Services.Foundations.VideoMetadatas
         {
             this.storageBrokerMock = new Mock<IStorageBroker>();
             this.loggingBrokerMock = new Mock<ILoggingBroker>();
+            this.dateTimeBrokerMock= new Mock<IDateTimeBroker>();   
 
             this.videoMetadataService = new VideoMetadataService
                 (storageBroker: this.storageBrokerMock.Object,

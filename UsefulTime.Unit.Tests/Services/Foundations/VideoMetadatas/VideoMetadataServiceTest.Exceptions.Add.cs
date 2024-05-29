@@ -115,9 +115,9 @@ namespace UsefulTime.Unit.Tests.Services.Foundations.VideoMetadatas
                 new LockedVideoMetadataException("Video Metadata is locked, please try again.",
                     dbUpdateConcurrencyException);
 
-            VideoMetadataDependencyValidationException expectedVideoMetadataDependencyValidationException =
+            var expectedVideoMetadataDependencyValidationException =
                 new VideoMetadataDependencyValidationException(
-                    "Video Metadata dependency error occured. Fix errors and try again.",
+                    "Video Metadata dependency error occured, Fix errors and try again.",
                         lockedVideoMetadataException);
 
             this.dateTimeBrokerMock.Setup(broker =>
@@ -149,6 +149,5 @@ namespace UsefulTime.Unit.Tests.Services.Foundations.VideoMetadatas
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
-
     }
 }

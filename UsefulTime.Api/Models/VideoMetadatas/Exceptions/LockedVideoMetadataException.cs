@@ -11,7 +11,5 @@ namespace UsefulTime.Api.Models.VideoMetadatas.Exceptions
         public LockedVideoMetadataException(string message, Exception exception)
             :base(message,exception)
         { }
-            
-        
     }
 }

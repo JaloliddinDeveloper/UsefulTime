@@ -44,13 +44,13 @@ namespace UsefulTime.Api.Services.Foundations.VideoMetadatas
                       innerException: duplicateKeyException);
                 throw CreateAndDependencyValidationException(alreadyExistVideoMetadataException);
             }
-            catch (DbUpdateException databaseUpdateException)
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
-                var failedVideoMetadataStorageException = new FailedVideoMetadataStorageException(
-               message: "Failed video metadata error occured, cotact support",
-                   innerException: databaseUpdateException);
+                var lockedVideoMetadataException = new LockedVideoMetadataException(
+                    "Video Metadata is locked, please try again.",
+                        dbUpdateConcurrencyException);
 
-                throw CreateAndLogDependencyException(failedVideoMetadataStorageException);
+                throw CreateAndLogDependencyValidationException(lockedVideoMetadataException);
             }
             catch (Exception exception)
             {
@@ -104,6 +104,16 @@ namespace UsefulTime.Api.Services.Foundations.VideoMetadatas
                      message: "Video metadata dependency error occurred,fix the errors try again",
                      innerException:exception );
             this.loggingBroker.LogError(videoMetadataDependencyValidationException);
+            return videoMetadataDependencyValidationException;
+        }
+        private VideoMetadataDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
+        {
+            var videoMetadataDependencyValidationException = new VideoMetadataDependencyValidationException(
+                "Video Metadata dependency error occured, Fix errors and try again.",
+                    exception);
+
+            this.loggingBroker.LogError(videoMetadataDependencyValidationException);
+
             return videoMetadataDependencyValidationException;
         }
     }

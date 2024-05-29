@@ -19,9 +19,9 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddTransient<IStorageBroker, StorageBroker>();
         builder.Services.AddTransient<ILoggingBroker, LoggingBroker>();
+        builder.Services.AddTransient<IDateTimeBroker, DateTimeBroker>();
         builder.Services.AddTransient<IVideoMetadataService, VideoMetadataService>();
-        builder.Services.AddTransient<IDateTimeBroker,DateTimeBroker>();    
-
+       
         var app = builder.Build();
 
         if (app.Environment.IsDevelopment())
