@@ -8,7 +8,6 @@ using Microsoft.Data.SqlClient;
 using Moq;
 using UsefulTime.Api.Models.VideoMetadatas;
 using UsefulTime.Api.Models.VideoMetadatas.Exceptions;
-using Xunit.Abstractions;
 
 namespace UsefulTime.Unit.Tests.Services.Foundations.VideoMetadatas
 {
