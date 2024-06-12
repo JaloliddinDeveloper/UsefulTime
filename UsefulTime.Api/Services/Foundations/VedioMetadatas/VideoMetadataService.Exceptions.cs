@@ -4,6 +4,7 @@
 //=================================================
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using UsefulTime.Api.Models.VideoMetadatas;
 using UsefulTime.Api.Models.VideoMetadatas.Exceptions;
 using Xeptions;
@@ -43,10 +44,28 @@ namespace UsefulTime.Api.Services.Foundations.VideoMetadatas
                       innerException: duplicateKeyException);
                 throw CreateAndDependencyValidationException(alreadyExistVideoMetadataException);
             }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                LockedVideoMetadataException lockedVideoMetadataException = new LockedVideoMetadataException(
+                    "Video Metadata is locked, please try again",
+                        dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyValidationException(lockedVideoMetadataException);
+            }
+            catch (DbUpdateException databaseUpdateException)
+            {
+                var failedVideoMetadataStorageException = new FailedVideoMetadataStorageException(
+                    message: "Failed video metadata error occured, contact support",
+                    innerException: databaseUpdateException);
+
+                throw CreateAndLogDependencyException(failedVideoMetadataStorageException);
+            }
             catch (Exception exception)
             {
                 var failedVideoMetadataServiceException =
-                    new FailedVideoMetadataServiceException(message: "Failed guest service error occurred,contact support",innerException:exception);
+                    new FailedVideoMetadataServiceException(
+                        message: "Failed guest service error occurred,contact support",
+                        innerException:exception);
 
                 throw CreateAndLogServiseException(failedVideoMetadataServiceException);
             }
@@ -81,9 +100,29 @@ namespace UsefulTime.Api.Services.Foundations.VideoMetadatas
         {
             var videoMetadataDependencyValidationException =
                  new VideoMetadataDependencyValidationException(
-                     message: "Video metadata dependency error occurred,fix the errors try again",
+                     message: "Video metadata Dependency validation error occured,fix the errors and try again",
                      innerException:exception );
             this.loggingBroker.LogError(videoMetadataDependencyValidationException);
+            return videoMetadataDependencyValidationException;
+        }
+        private Exception CreateAndLogDependencyException(Xeption exception)
+        {
+            var videoMetadataDependencyException = new VideoMetadataDependencyException(
+                message: "Video metadata dependency error occured, fix the errors and try again",
+                innerException: exception);
+
+            this.loggingBroker.LogError(videoMetadataDependencyException);
+
+            return videoMetadataDependencyException;
+        }
+        private VideoMetadataDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
+        {
+            var videoMetadataDependencyValidationException = new VideoMetadataDependencyValidationException(
+                "Video metadata Dependency validation error occured,fix the errors and try again",
+                    exception);
+
+            this.loggingBroker.LogError(videoMetadataDependencyValidationException);
+
             return videoMetadataDependencyValidationException;
         }
     }
